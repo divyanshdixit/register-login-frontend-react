@@ -12,20 +12,20 @@ export const validate = (values) => {
 
     if(!values.email){
         errors.email = "Email is required!";
+    }else if(!emailRegex.test(values.email)){
+        errors.email = "Please provide valid email ID!";
     }
-    // else if(){
-    //     errors.email = "Input email is not valid!";
-    // }
 
     if(!values.password){
         errors.password = "Password is required!";
+    }else if(values.password.length < 4){
+        errors.password = "Password must contain greator than 4 chars!";
     }
-    // else if(){
-    //     errors.password = "Password should be greator than 3 char and less than 10 chars";
-    // }
     
-    if(values.cpassword !== values.password){
-        errors.cpassword = "Password mismatch!";
+    if(!values.cpassword){
+        errors.cpassword = "Password is required!";
+    }else if(values.cpassword !== values.password){
+        errors.cpassword = "Password is not matching!";
     }
 
     return errors;

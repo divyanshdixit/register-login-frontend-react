@@ -19,6 +19,7 @@ const Signup = () => {
   const navigate = useNavigate()
 
   const submitDetails = async() => {
+    try{
     const {uname, email, password} = userDetails;
     const postData = await fetch("http://localhost:3001/register", {
       method: "POST",
@@ -32,12 +33,18 @@ const Signup = () => {
       },
     });
     const postDetails = await postData.json();
+    console.log(postDetails);
     if(postData.status === 201){
       alert(`${postDetails.message}`);
       setUserDetails(initUserDetails);
       // once the user is registered, we'll redirect it to login page.
       navigate('/login');
+    }else{
+      alert(`${postDetails.message}`);
     }
+  }catch(err){
+    console.log(err);
+  }
   }
 
   useEffect(() => {
@@ -57,7 +64,7 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     // first validate the form values:
     setFormErrors(validate(userDetails));
     setIsSubmit(true);
@@ -67,7 +74,6 @@ const Signup = () => {
     <div>
       <h1>Signup </h1>
 
-      <span className="error">{error}</span>
       <form>
         <div>
           <label htmlFor="email">Email: </label>
@@ -78,6 +84,7 @@ const Signup = () => {
             value={userDetails.email}
             onChange={changeDetails}
           />
+          <span className={error}> {formErrors.email} </span>
         </div>
         <div>
           <label htmlFor="uname">UserName: </label>
@@ -88,6 +95,7 @@ const Signup = () => {
             value={userDetails.uname}
             onChange={changeDetails}
           />
+          <span className={error}> {formErrors.uname} </span>
         </div>
         <div>
           <label htmlFor="password">Password: </label>
@@ -98,6 +106,7 @@ const Signup = () => {
             value={userDetails.password}
             onChange={changeDetails}
           />
+          <span className={error}> {formErrors.password} </span>
         </div>
         <div>
           <label htmlFor="cpassword">Confirm Password: </label>
@@ -108,6 +117,7 @@ const Signup = () => {
             value={userDetails.cpassword}
             onChange={changeDetails}
           />
+          <span className={error}> {formErrors.cpassword} </span>
         </div>
         <button style={{ background: "lightblue", padding: "10px"}} type="button" onClick={handleSubmit}>
           Signup
